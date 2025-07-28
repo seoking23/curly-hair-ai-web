@@ -132,8 +132,8 @@ export default function PDFResultsDisplay({ analysis, analyzedImages, isSelfieMo
         </div>
 
         {/* PDF Content Container */}
-        <div ref={pdfRef} className="bg-white rounded-2xl shadow-lg p-8 mb-8 print:p-0 print:shadow-none">
-          {/* PDF Header */}
+        <div ref={pdfRef} className="pdf-content-container bg-white rounded-2xl shadow-lg p-8 mb-8 print:p-0 print:shadow-none">
+          {/* PDF Header with Tag Bar */}
           <div className="text-center mb-8 print:mb-6">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-16 h-16 bg-gradient-to-br from-primary to-success rounded-full flex items-center justify-center">
@@ -144,7 +144,7 @@ export default function PDFResultsDisplay({ analysis, analyzedImages, isSelfieMo
                 <p className="text-text-muted">Professional Hair Analysis Report</p>
               </div>
             </div>
-            <div className="border-t border-border-primary pt-4">
+            <div className="border-t border-border-primary pt-4 mb-4">
               <p className="text-sm text-text-muted">
                 Generated on {new Date().toLocaleDateString('en-US', { 
                   year: 'numeric', 
@@ -152,6 +152,12 @@ export default function PDFResultsDisplay({ analysis, analyzedImages, isSelfieMo
                   day: 'numeric' 
                 })}
               </p>
+            </div>
+            {/* Tag Bar - Moved to top for better PDF visibility */}
+            <div className="flex justify-center gap-4 text-xs text-text-muted bg-surface-secondary py-2 px-4 rounded-lg border border-border-primary print:bg-gray-100">
+              <span>🔬 Scientific Analysis</span>
+              <span>🎯 Personalized Results</span>
+              <span>💡 Expert Recommendations</span>
             </div>
           </div>
 
@@ -423,11 +429,6 @@ export default function PDFResultsDisplay({ analysis, analyzedImages, isSelfieMo
             <p className="text-sm text-text-muted mb-2">
               Get your own personalized analysis at curly-hair-ai.com
             </p>
-            <div className="flex justify-center gap-4 text-xs text-text-muted">
-              <span>🔬 Scientific Analysis</span>
-              <span>🎯 Personalized Results</span>
-              <span>💡 Expert Recommendations</span>
-            </div>
           </div>
         </div>
 
@@ -472,6 +473,20 @@ export default function PDFResultsDisplay({ analysis, analyzedImages, isSelfieMo
           .print\\:mb-6 { margin-bottom: 1.5rem !important; }
           .print\\:shadow-none { box-shadow: none !important; }
           button { display: none !important; }
+          
+          /* Ensure tag bar is visible and properly positioned in print */
+          .print\\:bg-gray-100 { background-color: #f3f4f6 !important; }
+          
+          /* Add page breaks to prevent content overlap */
+          .pdf-content-container > div:nth-child(2) { 
+            page-break-before: auto; 
+          }
+          
+          /* Ensure proper spacing for print */
+          .pdf-content-container { 
+            padding: 20px !important; 
+            margin: 0 !important; 
+          }
         }
       `}</style>
     </div>

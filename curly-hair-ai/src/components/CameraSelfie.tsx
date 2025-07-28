@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Camera, RotateCw, Check, Upload } from 'lucide-react';
-import { compressImage } from '@/lib/image-processing';
+import { compressImage, cropToSquare, ensureSquareAspectRatio } from '@/lib/image-processing';
 import Image from 'next/image';
 
 interface CameraSelfieProps {
@@ -21,6 +21,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
   const [permissionState, setPermissionState] = useState<PermissionState>('prompt');
   const [showFallback, setShowFallback] = useState(false);
+  const [isRetakeMode, setIsRetakeMode] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -74,8 +75,11 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
         ctx.restore();
       }
 
-      // Convert to blob and compress
-      canvas.toBlob(async (blob) => {
+      // Crop to square aspect ratio
+      const squareCanvas = cropToSquare(canvas, ctx);
+      
+      // Convert square canvas to blob and compress
+      squareCanvas.toBlob(async (blob) => {
         if (!blob) return;
 
         const file = new File([blob], 'selfie.jpg', { type: 'image/jpeg' });
@@ -107,21 +111,21 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
       // Wait for video element to be available in DOM
       if (!videoRef.current) {
         if (attempt <= 10) {
-          console.log(`Video ref not ready, retrying... (attempt ${attempt}/10)`);
+          console.log(`CameraSelfie - Video ref not ready, retrying... (attempt ${attempt}/10)`);
           // Use requestAnimationFrame for better DOM sync
           requestAnimationFrame(() => {
             setTimeout(() => initializeCamera(attempt + 1), 100);
           });
           return;
         } else {
-          console.error('Video element failed to mount after 10 attempts');
+          console.error('CameraSelfie - Video element failed to mount after 10 attempts');
           throw new Error('Camera interface failed to initialize. Please refresh the page.');
         }
       }
 
       // Additional check: ensure video element is connected to DOM
       if (!videoRef.current.isConnected) {
-        console.log('Video element not connected to DOM yet, retrying...');
+        console.log('CameraSelfie - Video element not connected to DOM yet, retrying...');
         if (attempt <= 10) {
           setTimeout(() => initializeCamera(attempt + 1), 100);
           return;
@@ -138,7 +142,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
       // Check permissions first
       await checkCameraPermission();
 
-      console.log('Requesting camera access with facingMode:', facingMode);
+      console.log('CameraSelfie - Requesting camera access with facingMode:', facingMode, 'retakeMode:', isRetakeMode);
 
       const constraints: MediaStreamConstraints = {
         video: {
@@ -169,13 +173,13 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
       
       // Handle video events
       const handleVideoReady = () => {
-        console.log('Video ready to play');
+        console.log('CameraSelfie - Video ready to play');
         setIsLoading(false);
         setPermissionState('granted');
       };
 
       const handleVideoError = (e: Event) => {
-        console.error('Video element error:', e);
+        console.error('CameraSelfie - Video element error:', e);
         setError('Video playback failed');
         setIsLoading(false);
       };
@@ -187,12 +191,12 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
       try {
         await video.play();
       } catch (playError) {
-        console.error('Video play error:', playError);
+        console.error('CameraSelfie - Video play error:', playError);
         // Don't throw here, let the video element handle it
       }
 
     } catch (err) {
-      console.error('Camera initialization error:', err);
+      console.error('CameraSelfie - Camera initialization error:', err);
       
       let errorMessage = 'Unable to access camera. ';
       let shouldShowFallback = false;
@@ -248,10 +252,27 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
     setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
   }, [stream]);
 
-  const retakePhoto = useCallback(() => {
+  const retakePhoto = useCallback(async () => {
     setCapturedImage(null);
-    // Camera stream should continue working, just reset UI state
-  }, []);
+    setIsLoading(true);
+    setError(null);
+    setIsRetakeMode(true);
+    
+    // Ensure camera is properly mounted and ready
+    try {
+      // Small delay to allow UI state to reset
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Reinitialize camera to ensure it's properly mounted
+      await initializeCamera();
+    } catch (error) {
+      console.error('CameraSelfie - Error reinitializing camera on retake:', error);
+      setError('Failed to restart camera. Please refresh the page.');
+      setIsLoading(false);
+    } finally {
+      setIsRetakeMode(false);
+    }
+  }, [initializeCamera]);
 
   const analyzePhoto = () => {
     if (capturedImage) {
@@ -313,17 +334,30 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
   }, [facingMode]); // Only depend on facingMode to avoid infinite loops
 
   // File upload handler for fallback
-  const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const imageData = reader.result as string;
-      setCapturedImage(imageData);
-      onCapture(imageData);
-    };
-    reader.readAsDataURL(file);
+    try {
+      setIsProcessing(true);
+      
+      // Ensure the uploaded image is cropped to square and compressed
+      const squareFile = await ensureSquareAspectRatio(file);
+      const compressedFile = await compressImage(squareFile);
+      
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imageData = reader.result as string;
+        setCapturedImage(imageData);
+        onCapture(imageData);
+      };
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error('CameraSelfie - Error processing uploaded image:', error);
+      setError('Failed to process uploaded image. Please try again.');
+    } finally {
+      setIsProcessing(false);
+    }
   }, [onCapture]);
 
   if (capturedImage) {
@@ -352,10 +386,11 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
             
             <button
               onClick={retakePhoto}
-              className="w-full border border-border-primary hover:bg-surface-secondary text-text-primary font-semibold px-8 py-3 rounded-lg transition-all duration-200"
+              disabled={isRetakeMode}
+              className="w-full border border-border-primary hover:bg-surface-secondary text-text-primary font-semibold px-8 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <RotateCw className="w-4 h-4 inline mr-2" />
-              Retake Photo
+              <RotateCw className={`w-4 h-4 inline mr-2 ${isRetakeMode ? 'animate-spin' : ''}`} />
+              {isRetakeMode ? 'Restarting Camera...' : 'Retake Photo'}
             </button>
           </div>
         </div>
@@ -386,8 +421,12 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
             <div className="aspect-square bg-surface-primary border border-border-primary rounded-2xl flex items-center justify-center min-h-[400px] shadow-sm">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-text-primary font-medium">Starting camera...</p>
-                <p className="text-xs text-text-muted mt-2">Please allow camera access when prompted</p>
+                <p className="text-text-primary font-medium">
+                  {isRetakeMode ? 'Restarting camera...' : 'Starting camera...'}
+                </p>
+                <p className="text-xs text-text-muted mt-2">
+                  {isRetakeMode ? 'Preparing for new photo' : 'Please allow camera access when prompted'}
+                </p>
               </div>
             </div>
           )}
@@ -499,7 +538,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
                 {/* Status indicators */}
                 <div className="absolute top-[-2rem] left-4 right-4">
                   <div className="text-center p-2 rounded-lg border bg-surface-primary border-border-secondary text-text-muted">
-                    <span className="text-sm font-medium">Position your face in the oval and tap capture</span>
+                    <span className="text-sm font-medium">Position your face in the oval • Image will be cropped to square</span>
                   </div>
                 </div>
 
@@ -508,7 +547,8 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                     <div className="bg-surface-primary rounded-2xl p-6 text-center border border-border-primary shadow-lg">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                      <p className="text-text-primary font-medium">Capturing...</p>
+                      <p className="text-text-primary font-medium">Processing image...</p>
+                      <p className="text-xs text-text-muted mt-1">Cropping to square & optimizing</p>
                     </div>
                   </div>
                 )}
