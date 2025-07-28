@@ -1,0 +1,346 @@
+@import "tailwindcss";
+
+:root {
+  /* Base Colors - Refined neutral palette */
+  --background: #fefefe;           /* Pure white - minimal distraction */
+  --foreground: #1a1a1a;           /* True black - optimal contrast */
+  
+  /* Primary Palette - Subtle sophistication */
+  --primary: #525252;              /* Neutral 600 - professional, non-intrusive */
+  --primary-hover: #404040;        /* Neutral 700 - subtle interaction */
+  --primary-light: #737373;        /* Neutral 500 - lighter variant */
+  
+  /* Secondary Palette - Warm accent (minimal) */
+  --secondary: #a3a3a3;            /* Neutral 400 - very subtle secondary */
+  --secondary-hover: #737373;      /* Neutral 500 - gentle interaction */
+  --secondary-light: #d4d4d8;      /* Neutral 300 - background accents */
+  
+  /* Accent Colors - Refined earth tone */
+  --accent: #78716c;               /* Stone 500 - sophisticated earth */
+  --accent-hover: #57534e;         /* Stone 600 - deeper interaction */
+  --accent-light: #a8a29e;         /* Stone 400 - subtle highlight */
+  
+  /* Semantic Colors - Muted but clear */
+  --success: #16a34a;              /* Green 600 - clear success */
+  --success-light: #dcfce7;        /* Green 100 - subtle background */
+  --warning: #ea580c;              /* Orange 600 - attention without alarm */
+  --warning-light: #fed7aa;        /* Orange 200 - gentle background */
+  --error: #dc2626;                /* Red 600 - clear but not harsh */
+  --error-light: #fecaca;          /* Red 200 - soft error background */
+  --info: #2563eb;                 /* Blue 600 - professional information */
+  --info-light: #dbeafe;           /* Blue 100 - subtle info background */
+  
+  /* Text Hierarchy - High contrast, subtle gradation */
+  --text-primary: #0a0a0a;         /* Near black - primary content */
+  --text-secondary: #525252;       /* Neutral 600 - secondary content */
+  --text-muted: #a3a3a3;           /* Neutral 400 - supportive text */
+  --text-inverse: #fafafa;         /* Near white - dark background text */
+  
+  /* Surface Colors - Minimal elevation */
+  --surface-primary: #ffffff;      /* Pure white - main surfaces */
+  --surface-secondary: #fafafa;    /* Neutral 50 - subtle elevation */
+  --surface-tertiary: #f5f5f5;     /* Neutral 100 - card backgrounds */
+  --surface-elevated: #ffffff;     /* White with shadow - modals */
+  
+  /* Border & Divider Colors - Extremely subtle */
+  --border-primary: #e5e5e5;       /* Neutral 200 - main borders */
+  --border-secondary: #f5f5f5;     /* Neutral 100 - subtle dividers */
+  --border-focus: #525252;         /* Neutral 600 - focus indicator */
+  
+  /* Navigation & UI - Clean minimalism */
+  --nav-background: #ffffff;       /* Pure white navigation */
+  --nav-border: #f5f5f5;          /* Barely visible border */
+  --nav-text: #1a1a1a;           /* High contrast nav text */
+  
+  /* Interactive States - Whisper-light feedback */
+  --hover-overlay: rgba(0, 0, 0, 0.04);      /* Subtle gray hover */
+  --active-overlay: rgba(0, 0, 0, 0.08);     /* Gentle gray active */
+  --focus-ring: rgba(82, 82, 82, 0.2);       /* Professional focus */
+  
+  /* Gradient Definitions - Minimal, sophisticated */
+  --gradient-primary: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+  --gradient-warm: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+  --gradient-subtle: linear-gradient(135deg, #fefefe 0%, #f9f9f9 100%);
+}
+
+@theme inline {
+  /* Base Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  /* Primary Palette */
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  
+  /* Secondary Palette */
+  --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-light: var(--secondary-light);
+  
+  /* Accent Colors */
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent-light);
+  
+  /* Semantic Colors */
+  --color-success: var(--success);
+  --color-success-light: var(--success-light);
+  --color-warning: var(--warning);
+  --color-warning-light: var(--warning-light);
+  --color-error: var(--error);
+  --color-error-light: var(--error-light);
+  --color-info: var(--info);
+  --color-info-light: var(--info-light);
+  
+  /* Text Colors */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-inverse: var(--text-inverse);
+  
+  /* Surface Colors */
+  --color-surface-primary: var(--surface-primary);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-tertiary: var(--surface-tertiary);
+  --color-surface-elevated: var(--surface-elevated);
+  
+  /* Border Colors */
+  --color-border-primary: var(--border-primary);
+  --color-border-secondary: var(--border-secondary);
+  --color-border-focus: var(--border-focus);
+  
+  /* Navigation */
+  --color-nav-background: var(--nav-background);
+  --color-nav-border: var(--nav-border);
+  --color-nav-text: var(--nav-text);
+  
+  /* Interactive States */
+  --color-hover-overlay: var(--hover-overlay);
+  --color-active-overlay: var(--active-overlay);
+  --color-focus-ring: var(--focus-ring);
+  
+  /* Typography */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Base Colors - Professional dark theme */
+    --background: #0a0a0a;              /* True black - minimal eye strain */
+    --foreground: #fafafa;              /* Near white - optimal contrast */
+    
+    /* Primary Palette - Consistent neutrals */
+    --primary: #a3a3a3;                 /* Neutral 400 - visible on dark */
+    --primary-hover: #d4d4d8;           /* Neutral 300 - lighter interaction */
+    --primary-light: #737373;           /* Neutral 500 - muted variant */
+    
+    /* Secondary Palette - Subtle hierarchy */
+    --secondary: #737373;               /* Neutral 500 - secondary elements */
+    --secondary-hover: #a3a3a3;         /* Neutral 400 - gentle interaction */
+    --secondary-light: #525252;         /* Neutral 600 - background accents */
+    
+    /* Accent Colors - Refined stone tones */
+    --accent: #a8a29e;                  /* Stone 400 - sophisticated accent */
+    --accent-hover: #d6d3d1;            /* Stone 300 - lighter interaction */
+    --accent-light: #78716c;            /* Stone 500 - muted highlight */
+    
+    /* Semantic Colors - Clear but gentle */
+    --success: #22c55e;                 /* Green 500 - visible success */
+    --success-light: #166534;           /* Green 800 - dark background */
+    --warning: #f97316;                 /* Orange 500 - clear attention */
+    --warning-light: #c2410c;           /* Orange 700 - dark background */
+    --error: #ef4444;                   /* Red 500 - clear but gentle */
+    --error-light: #b91c1c;             /* Red 700 - dark background */
+    --info: #3b82f6;                    /* Blue 500 - professional info */
+    --info-light: #1d4ed8;              /* Blue 700 - dark background */
+    
+    /* Text Hierarchy - Optimized for dark backgrounds */
+    --text-primary: #fafafa;            /* Near white - primary content */
+    --text-secondary: #a3a3a3;          /* Neutral 400 - secondary content */
+    --text-muted: #737373;              /* Neutral 500 - supportive text */
+    --text-inverse: #0a0a0a;            /* True black - light background text */
+    
+    /* Surface Colors - Subtle elevation */
+    --surface-primary: #0a0a0a;         /* True black - main surfaces */
+    --surface-secondary: #171717;       /* Neutral 900 - subtle elevation */
+    --surface-tertiary: #262626;        /* Neutral 800 - card backgrounds */
+    --surface-elevated: #171717;        /* Neutral 900 with shadow - modals */
+    
+    /* Border & Divider Colors - Minimal visibility */
+    --border-primary: #404040;          /* Neutral 700 - main borders */
+    --border-secondary: #262626;        /* Neutral 800 - subtle dividers */
+    --border-focus: #a3a3a3;            /* Neutral 400 - focus indicator */
+    
+    /* Navigation & UI - Clean dark interface */
+    --nav-background: #0a0a0a;          /* True black navigation */
+    --nav-border: #262626;             /* Barely visible border */
+    --nav-text: #fafafa;               /* High contrast nav text */
+    
+    /* Interactive States - Whisper-light feedback */
+    --hover-overlay: rgba(255, 255, 255, 0.04);   /* Subtle white hover */
+    --active-overlay: rgba(255, 255, 255, 0.08);  /* Gentle white active */
+    --focus-ring: rgba(163, 163, 163, 0.2);       /* Professional focus */
+    
+    /* Gradient Definitions - Minimal dark gradients */
+    --gradient-primary: linear-gradient(135deg, #171717 0%, #262626 100%);
+    --gradient-warm: linear-gradient(135deg, #0a0a0a 0%, #171717 100%);
+    --gradient-subtle: linear-gradient(135deg, #0a0a0a 0%, #141414 100%);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 4px var(--focus-ring);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--border-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Selection styles */
+::selection {
+  background: var(--primary);
+  color: var(--text-inverse);
+}
+
+/* Interactive elements - Professional patterns */
+button {
+  background: var(--surface-primary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:hover {
+  background: var(--surface-secondary);
+  border-color: var(--border-focus);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+  background: var(--surface-tertiary);
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Form elements - Subtle and professional */
+input, textarea, select {
+  background: var(--surface-primary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+  outline: none;
+}
+
+input:hover, textarea:hover, select:hover {
+  border-color: var(--text-muted);
+}
+
+/* Card patterns - Minimal elevation */
+.card {
+  background: var(--surface-primary);
+  border: 1px solid var(--border-secondary);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02), 0 1px 2px -1px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  border-color: var(--border-primary);
+}
+
+/* Link patterns - Subtle underlines */
+a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:hover {
+  text-decoration-color: var(--text-muted);
+}
+
+/* Loading states - Minimal animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.loading {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
