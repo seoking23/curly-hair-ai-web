@@ -60,10 +60,10 @@ export default function RoutinePage() {
               </div>
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-text-primary mb-4">
+          <h2 className="text-2xl font-bold text-primary mb-4">
             Creating Your Personalized Routine...
           </h2>
-          <p className="text-text-secondary">
+          <p className="text-secondary">
             Crafting the perfect hair care plan based on your analysis
           </p>
         </div>
@@ -76,11 +76,11 @@ export default function RoutinePage() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8">
           <div className="text-6xl mb-6">😅</div>
-          <h2 className="text-2xl font-bold text-text-primary mb-4">Oops! Something went wrong</h2>
-          <p className="text-text-secondary mb-6">{error}</p>
+          <h2 className="text-2xl font-bold text-primary mb-4">Oops! Something went wrong</h2>
+          <p className="text-secondary mb-6">{error}</p>
           <button
             onClick={() => router.push('/analysis')}
-            className="bg-primary hover:bg-primary-hover text-text-inverse font-semibold px-8 py-3 border border-border-primary transition-all duration-200 rounded-lg"
+            className="bg-primary hover:bg-primary-hover text-inverse font-semibold px-8 py-3 border border-border-primary transition-all duration-200 rounded-lg"
           >
             Back to Analysis
           </button>

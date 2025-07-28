@@ -76,10 +76,10 @@ export default function ResourceCard({ resource, compact = false }: ResourceCard
             {getTypeIcon()}
           </div>
           <div className="flex-1 min-w-0">
-            <h4 className="font-medium text-text-primary text-sm line-clamp-2 group-hover:text-primary transition-colors">
+            <h4 className="font-medium text-primary text-sm line-clamp-2 group-hover:text-primary transition-colors">
               {resource.title}
             </h4>
-            <div className="flex items-center gap-2 mt-1 text-xs text-text-muted">
+            <div className="flex items-center gap-2 mt-1 text-xs text-muted">
               <span className="px-2 py-1 bg-surface-secondary rounded-full text-xs">
                 {getTypeLabel()}
               </span>
@@ -127,25 +127,25 @@ export default function ResourceCard({ resource, compact = false }: ResourceCard
             <div className={`w-6 h-6 rounded-full flex items-center justify-center ${getTypeColor()}`}>
               {getTypeIcon()}
             </div>
-            <span className="text-xs font-medium text-text-muted">{getTypeLabel()}</span>
+            <span className="text-xs font-medium text-muted">{getTypeLabel()}</span>
             {resource.duration && (
-              <div className="flex items-center gap-1 text-xs text-text-muted">
+              <div className="flex items-center gap-1 text-xs text-muted">
                 <Clock className="w-3 h-3" />
                 <span>{resource.duration}</span>
               </div>
             )}
           </div>
           
-          <h4 className="font-semibold text-text-primary text-base mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+          <h4 className="font-semibold text-primary text-base mb-2 line-clamp-2 group-hover:text-primary transition-colors">
             {resource.title}
           </h4>
           
-          <p className="text-sm text-text-secondary line-clamp-2 mb-3">
+          <p className="text-sm text-secondary line-clamp-2 mb-3">
             {resource.description}
           </p>
           
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs text-text-muted">
+            <div className="flex items-center gap-2 text-xs text-muted">
               {resource.author && (
                 <div className="flex items-center gap-1">
                   <User className="w-3 h-3" />

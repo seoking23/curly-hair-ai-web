@@ -51,7 +51,7 @@ export default function SocialShare({
     return (
       <button
         onClick={handleShare}
-        className={`p-2 rounded-full bg-primary hover:bg-primary-hover text-text-inverse transition-all duration-200 ${className}`}
+        className={`p-2 rounded-full bg-primary hover:bg-primary-hover text-inverse transition-all duration-200 ${className}`}
         title="Share results"
       >
         {copied ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
@@ -63,15 +63,15 @@ export default function SocialShare({
     return (
       <div className={`bg-gradient-to-r from-primary/10 to-success/10 rounded-xl p-6 ${className}`}>
         <div className="text-center mb-4">
-          <h3 className="text-xl font-bold text-text-primary mb-2">Share Your Results! 🎉</h3>
-          <p className="text-text-secondary">
+          <h3 className="text-xl font-bold text-primary mb-2">Share Your Results! 🎉</h3>
+          <p className="text-secondary">
             Help others discover their curl type and get personalized hair care advice
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={handleShare}
-            className="bg-primary hover:bg-primary-hover text-text-inverse font-semibold px-6 py-3 border border-border-primary transition-all duration-200 rounded-lg flex items-center justify-center gap-2"
+            className="bg-primary hover:bg-primary-hover text-inverse font-semibold px-6 py-3 border border-border-primary transition-all duration-200 rounded-lg flex items-center justify-center gap-2"
           >
             <Share2 className="w-4 h-4" />
             {copied ? 'Copied!' : 'Share Results'}
@@ -82,14 +82,14 @@ export default function SocialShare({
               setCopied(true);
               setTimeout(() => setCopied(false), 2000);
             }}
-            className="border border-border-primary hover:bg-surface-secondary text-text-primary font-semibold px-6 py-3 transition-all duration-200 rounded-lg flex items-center justify-center gap-2"
+            className="border border-border-primary hover:bg-surface-secondary text-primary font-semibold px-6 py-3 transition-all duration-200 rounded-lg flex items-center justify-center gap-2"
           >
             <Copy className="w-4 h-4" />
             {copied ? 'Copied!' : 'Copy Link'}
           </button>
         </div>
         <div className="text-center mt-4">
-          <p className="text-sm text-text-muted">
+          <p className="text-sm text-muted">
             📱 Share on social media • 💬 Send to friends • 📧 Email to yourself
           </p>
         </div>
@@ -101,7 +101,7 @@ export default function SocialShare({
   return (
     <button
       onClick={handleShare}
-      className={`bg-primary hover:bg-primary-hover text-text-inverse font-semibold px-6 py-3 border border-border-primary transition-all duration-200 rounded-lg flex items-center gap-2 ${className}`}
+      className={`bg-primary hover:bg-primary-hover text-inverse font-semibold px-6 py-3 border border-border-primary transition-all duration-200 rounded-lg flex items-center gap-2 ${className}`}
     >
       <Share2 className="w-4 h-4" />
       {copied ? 'Copied!' : 'Share Results'}

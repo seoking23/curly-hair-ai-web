@@ -33,7 +33,7 @@ export default function LoadingAnimation() {
         />
       </motion.svg>
       <motion.h2
-        className='text-2xl font-bold text-text-primary mb-2'
+        className='text-2xl font-bold text-primary mb-2'
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
@@ -41,7 +41,7 @@ export default function LoadingAnimation() {
         Analyzing your beautiful curls...
       </motion.h2>
       <motion.p
-        className='text-text-secondary max-w-xs mx-auto'
+        className='text-secondary max-w-xs mx-auto'
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.5 }}

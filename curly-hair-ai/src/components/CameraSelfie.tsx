@@ -364,7 +364,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="max-w-md mx-auto text-center">
-          <h2 className="text-2xl font-bold text-text-primary mb-6">Perfect! 📸</h2>
+          <h2 className="text-2xl font-bold text-primary mb-6">Perfect! 📸</h2>
           
           <div className="relative mb-6">
             <Image
@@ -379,7 +379,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
           <div className="space-y-4">
             <button
               onClick={analyzePhoto}
-              className="w-full bg-primary hover:bg-primary-hover text-text-inverse font-semibold text-lg px-8 py-4 rounded-lg border border-border-primary transition-all duration-200 shadow-sm hover:shadow-md"
+              className="w-full bg-primary hover:bg-primary-hover text-inverse font-semibold text-lg px-8 py-4 rounded-lg border border-border-primary transition-all duration-200 shadow-sm hover:shadow-md"
             >
               Analyze My Hair ✨
             </button>
@@ -387,7 +387,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
             <button
               onClick={retakePhoto}
               disabled={isRetakeMode}
-              className="w-full border border-border-primary hover:bg-surface-secondary text-text-primary font-semibold px-8 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full border border-border-primary hover:bg-surface-secondary text-primary font-semibold px-8 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <RotateCw className={`w-4 h-4 inline mr-2 ${isRetakeMode ? 'animate-spin' : ''}`} />
               {isRetakeMode ? 'Restarting Camera...' : 'Retake Photo'}
@@ -403,10 +403,10 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
       {/* Header */}
       <div className="p-4 border-b border-border-secondary bg-surface-primary">
         <div className="max-w-md mx-auto text-center">
-          <h1 className="text-2xl font-bold text-text-primary mb-2">
+          <h1 className="text-2xl font-bold text-primary mb-2">
             Curly Hair AI
           </h1>
-          <p className="text-text-secondary">
+          <p className="text-secondary">
             Position your face in the frame and tap capture when ready
           </p>
         </div>
@@ -421,10 +421,10 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
             <div className="aspect-square bg-surface-primary border border-border-primary rounded-2xl flex items-center justify-center min-h-[400px] shadow-sm">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-text-primary font-medium">
+                <p className="text-primary font-medium">
                   {isRetakeMode ? 'Restarting camera...' : 'Starting camera...'}
                 </p>
-                <p className="text-xs text-text-muted mt-2">
+                <p className="text-xs text-muted mt-2">
                   {isRetakeMode ? 'Preparing for new photo' : 'Please allow camera access when prompted'}
                 </p>
               </div>
@@ -435,12 +435,12 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
             <div className="aspect-square bg-surface-primary border border-border-primary rounded-2xl flex items-center justify-center p-6 min-h-[400px] shadow-sm">
               <div className="text-center max-w-sm">
                 <div className="text-4xl mb-4">📷</div>
-                <p className="text-text-primary font-medium mb-4 text-sm">{error}</p>
+                <p className="text-primary font-medium mb-4 text-sm">{error}</p>
                 
                 {!showFallback ? (
                   <button
                     onClick={() => initializeCamera()}
-                    className="bg-primary hover:bg-primary-hover text-text-inverse font-semibold px-6 py-2 rounded-lg border border-border-primary transition-all duration-200 mb-3"
+                    className="bg-primary hover:bg-primary-hover text-inverse font-semibold px-6 py-2 rounded-lg border border-border-primary transition-all duration-200 mb-3"
                   >
                     Try Again
                   </button>
@@ -448,7 +448,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
                   <div className="space-y-3">
                     <button
                       onClick={() => initializeCamera()}
-                      className="bg-primary hover:bg-primary-hover text-text-inverse font-semibold px-6 py-2 rounded-lg border border-border-primary transition-all duration-200 block w-full"
+                      className="bg-primary hover:bg-primary-hover text-inverse font-semibold px-6 py-2 rounded-lg border border-border-primary transition-all duration-200 block w-full"
                     >
                       Try Camera Again
                     </button>
@@ -464,7 +464,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
                       />
                       <label
                         htmlFor="file-upload"
-                        className="flex items-center justify-center gap-2 w-full px-6 py-2 border border-border-primary hover:bg-surface-secondary text-text-primary font-semibold transition-all duration-200 cursor-pointer rounded-lg"
+                        className="flex items-center justify-center gap-2 w-full px-6 py-2 border border-border-primary hover:bg-surface-secondary text-primary font-semibold transition-all duration-200 cursor-pointer rounded-lg"
                       >
                         <Upload className="w-4 h-4" />
                         Upload Photo
@@ -473,7 +473,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
                   </div>
                 )}
                 
-                <p className="text-xs text-text-muted mt-3">
+                <p className="text-xs text-muted mt-3">
                   {permissionState === 'denied' 
                     ? 'Camera permission denied in browser settings' 
                     : 'Make sure to allow camera permissions'}
@@ -537,7 +537,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
 
                 {/* Status indicators */}
                 <div className="absolute top-[-2rem] left-4 right-4">
-                  <div className="text-center p-2 rounded-lg border bg-surface-primary border-border-secondary text-text-muted">
+                  <div className="text-center p-2 rounded-lg border bg-surface-primary border-border-secondary text-muted">
                     <span className="text-sm font-medium">Position your face in the oval • Image will be cropped to square</span>
                   </div>
                 </div>
@@ -547,8 +547,8 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                     <div className="bg-surface-primary rounded-2xl p-6 text-center border border-border-primary shadow-lg">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                      <p className="text-text-primary font-medium">Processing image...</p>
-                      <p className="text-xs text-text-muted mt-1">Cropping to square & optimizing</p>
+                      <p className="text-primary font-medium">Processing image...</p>
+                      <p className="text-xs text-muted mt-1">Cropping to square & optimizing</p>
                     </div>
                   </div>
                 )}
@@ -567,7 +567,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
             <button
               onClick={capturePhoto}
               disabled={isProcessing}
-              className="w-full max-w-xs bg-primary hover:bg-primary-hover text-text-inverse font-bold text-lg px-8 py-4 border border-border-primary transition-all duration-200 disabled:opacity-50 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="w-full max-w-xs bg-primary hover:bg-primary-hover text-inverse font-bold text-lg px-8 py-4 border border-border-primary transition-all duration-200 disabled:opacity-50 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               <Camera className="w-6 h-6 inline mr-3" />
               Capture Photo
@@ -578,7 +578,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
               <button
                 onClick={switchCamera}
                 disabled={isLoading}
-                className="p-3 border border-border-primary hover:bg-surface-secondary text-text-primary transition-all duration-200 disabled:opacity-50 rounded-full shadow-sm"
+                className="p-3 border border-border-primary hover:bg-surface-secondary text-primary transition-all duration-200 disabled:opacity-50 rounded-full shadow-sm"
                 title="Flip Camera"
               >
                 <RotateCw className="w-5 h-5" />
@@ -587,7 +587,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
           </div>
           
           <div className="text-center mt-4">
-            <p className="text-xs text-text-muted">
+            <p className="text-xs text-muted">
               📱 Hair down naturally • 💡 Good lighting • 📏 Face in oval • 👆 Tap capture when ready
             </p>
           </div>
@@ -600,7 +600,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
                 console.log('Debug - Stream:', stream);
                 console.log('Debug - Video dimensions:', videoRef.current?.videoWidth, 'x', videoRef.current?.videoHeight);
               }}
-              className="text-xs text-text-muted hover:text-primary transition-colors duration-200"
+              className="text-xs text-muted hover:text-primary transition-colors duration-200"
             >
               Debug Camera
             </button>

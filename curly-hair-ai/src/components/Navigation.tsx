@@ -26,10 +26,10 @@ export default function Navigation() {
             
             {/* Brand Text */}
             <div className="flex flex-col">
-              <h1 className="text-xl font-bold text-text-primary leading-tight">
+              <h1 className="text-xl font-bold text-primary leading-tight">
                 curly-hair-ai
               </h1>
-              <p className="text-xs text-text-muted font-medium tracking-wide">
+              <p className="text-xs text-muted font-medium tracking-wide">
                 Expert Hair Analysis
               </p>
             </div>
@@ -52,14 +52,14 @@ export default function Navigation() {
           <div className="flex items-center space-x-4">
             <Link
               href="/"
-              className="hidden sm:inline-flex items-center px-4 py-2 bg-success text-text-inverse text-sm font-medium rounded-lg hover:bg-success-hover transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+              className="hidden sm:inline-flex items-center px-4 py-2 bg-success text-inverse text-sm font-medium rounded-lg hover:bg-success-hover transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5"
             >
               Start Analysis
             </Link>
             
             {/* Mobile Menu Button */}
             <button className="md:hidden p-2 rounded-lg hover:bg-surface-secondary transition-colors duration-200">
-              <svg className="w-5 h-5 text-text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
@@ -85,7 +85,7 @@ function NavLink({
       className={`relative px-3 py-2 text-sm font-medium transition-all duration-200 rounded-md group ${
         active 
           ? 'text-primary' 
-          : 'text-text-muted hover:text-text-primary'
+          : 'text-muted hover:text-primary'
       }`}
     >
       {children}

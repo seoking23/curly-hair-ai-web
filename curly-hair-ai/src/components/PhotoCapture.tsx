@@ -415,8 +415,8 @@ export default function PhotoCapture() {
       <div className="p-4 border-b border-border-secondary bg-surface-primary">
         <div className="max-w-md mx-auto">
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold text-text-primary">Hair Photo Capture</h1>
-            <span className="text-sm text-text-muted">
+            <h1 className="text-2xl font-bold text-primary">Hair Photo Capture</h1>
+            <span className="text-sm text-muted">
               Step {currentStep + 1} of {photoSteps.length}
             </span>
           </div>
@@ -459,8 +459,8 @@ export default function PhotoCapture() {
                   </div>
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center p-2">
-                    <Camera className={`w-4 h-4 mb-1 ${index === currentStep ? 'text-primary' : 'text-text-muted'}`} />
-                    <p className="text-xs text-center font-medium text-text-secondary">{photo.title}</p>
+                    <Camera className={`w-4 h-4 mb-1 ${index === currentStep ? 'text-primary' : 'text-muted'}`} />
+                    <p className="text-xs text-center font-medium text-secondary">{photo.title}</p>
                   </div>
                 )}
               </div>
@@ -473,13 +473,13 @@ export default function PhotoCapture() {
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="max-w-md mx-auto text-center">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-text-primary mb-2">
+            <h2 className="text-2xl font-bold text-primary mb-2">
               {currentPhoto.title}
             </h2>
-            <p className="text-lg text-text-secondary mb-2">
+            <p className="text-lg text-secondary mb-2">
               {currentPhoto.instruction}
             </p>
-            <p className="text-sm text-text-muted">
+            <p className="text-sm text-muted">
               Make sure: {currentPhoto.validation}
             </p>
           </div>
@@ -500,14 +500,14 @@ export default function PhotoCapture() {
                 <div className="flex gap-4 justify-center">
                   <button
                     onClick={handleRetake}
-                    className="flex items-center gap-2 px-6 py-3 border border-border-primary hover:bg-surface-secondary text-text-primary font-semibold transition-all duration-200 rounded-lg"
+                    className="flex items-center gap-2 px-6 py-3 border border-border-primary hover:bg-surface-secondary text-primary font-semibold transition-all duration-200 rounded-lg"
                   >
                     <RotateCw className="w-4 h-4" />
                     Retake
                   </button>
                   <button
                     onClick={handleNext}
-                    className="flex items-center gap-2 px-8 py-3 bg-primary hover:bg-primary-hover text-text-inverse font-semibold border border-border-primary transition-all duration-200 rounded-lg"
+                    className="flex items-center gap-2 px-8 py-3 bg-primary hover:bg-primary-hover text-inverse font-semibold border border-border-primary transition-all duration-200 rounded-lg"
                   >
                     {currentStep === photoSteps.length - 1 ? (
                       allPhotosComplete ? 'Analyze Hair 🚀' : 'Continue'
@@ -523,8 +523,8 @@ export default function PhotoCapture() {
                   <div className="aspect-square bg-surface-primary border border-border-primary rounded-2xl flex items-center justify-center min-h-[400px] shadow-sm">
                     <div className="text-center">
                       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                      <p className="text-text-primary font-medium">Starting camera...</p>
-                      <p className="text-xs text-text-muted mt-2">Please allow camera access when prompted</p>
+                      <p className="text-primary font-medium">Starting camera...</p>
+                      <p className="text-xs text-muted mt-2">Please allow camera access when prompted</p>
                     </div>
                   </div>
                 )}
@@ -533,12 +533,12 @@ export default function PhotoCapture() {
                   <div className="aspect-square bg-surface-primary border border-border-primary rounded-2xl flex items-center justify-center p-6 min-h-[400px] shadow-sm">
                     <div className="text-center max-w-sm">
                       <div className="text-4xl mb-4">📷</div>
-                      <p className="text-text-primary font-medium mb-4 text-sm">{error}</p>
+                      <p className="text-primary font-medium mb-4 text-sm">{error}</p>
                       
                       {!showFallback ? (
                         <button
                           onClick={() => initializeCamera()}
-                          className="bg-primary hover:bg-primary-hover text-text-inverse font-semibold px-6 py-2 rounded-lg border border-border-primary transition-all duration-200 mb-3"
+                          className="bg-primary hover:bg-primary-hover text-inverse font-semibold px-6 py-2 rounded-lg border border-border-primary transition-all duration-200 mb-3"
                         >
                           Try Again
                         </button>
@@ -546,7 +546,7 @@ export default function PhotoCapture() {
                         <div className="space-y-3">
                           <button
                             onClick={() => initializeCamera()}
-                            className="bg-primary hover:bg-primary-hover text-text-inverse font-semibold px-6 py-2 rounded-lg border border-border-primary transition-all duration-200 block w-full"
+                            className="bg-primary hover:bg-primary-hover text-inverse font-semibold px-6 py-2 rounded-lg border border-border-primary transition-all duration-200 block w-full"
                           >
                             Try Camera Again
                           </button>
@@ -563,7 +563,7 @@ export default function PhotoCapture() {
                             />
                             <label
                               htmlFor="file-upload"
-                              className="flex items-center justify-center gap-2 w-full px-6 py-2 border border-border-primary hover:bg-surface-secondary text-text-primary font-semibold transition-all duration-200 cursor-pointer rounded-lg"
+                              className="flex items-center justify-center gap-2 w-full px-6 py-2 border border-border-primary hover:bg-surface-secondary text-primary font-semibold transition-all duration-200 cursor-pointer rounded-lg"
                             >
                               <Upload className="w-4 h-4" />
                               Upload Photo
@@ -572,7 +572,7 @@ export default function PhotoCapture() {
                         </div>
                       )}
                       
-                      <p className="text-xs text-text-muted mt-3">
+                      <p className="text-xs text-muted mt-3">
                         {permissionState === 'denied' 
                           ? 'Camera permission denied in browser settings' 
                           : 'Make sure to allow camera permissions'}
@@ -636,7 +636,7 @@ export default function PhotoCapture() {
 
                     {/* Status indicators */}
                     <div className="absolute top-[-2rem] left-4 right-4">
-                      <div className="text-center p-2 rounded-lg border bg-surface-primary border-border-secondary text-text-muted">
+                      <div className="text-center p-2 rounded-lg border bg-surface-primary border-border-secondary text-muted">
                         <span className="text-sm font-medium">Position your {currentPhoto.title} in the oval and tap capture</span>
                       </div>
                     </div>
@@ -646,7 +646,7 @@ export default function PhotoCapture() {
                       <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                         <div className="bg-surface-primary rounded-2xl p-6 text-center border border-border-primary shadow-lg">
                           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-                          <p className="text-text-primary font-medium">Capturing...</p>
+                          <p className="text-primary font-medium">Capturing...</p>
                         </div>
                       </div>
                     )}
@@ -667,7 +667,7 @@ export default function PhotoCapture() {
             <button
               onClick={switchCamera}
               disabled={isLoading}
-              className="flex items-center gap-2 px-4 py-2 border border-border-primary hover:bg-surface-secondary text-text-primary font-semibold transition-all duration-200 disabled:opacity-50 rounded-lg"
+              className="flex items-center gap-2 px-4 py-2 border border-border-primary hover:bg-surface-secondary text-primary font-semibold transition-all duration-200 disabled:opacity-50 rounded-lg"
             >
               <RotateCw className="w-4 h-4" />
               Flip
@@ -676,7 +676,7 @@ export default function PhotoCapture() {
             <button
               onClick={capturePhoto}
               disabled={isProcessing}
-              className="flex items-center gap-2 px-6 py-2 bg-primary hover:bg-primary-hover text-text-inverse font-semibold border border-border-primary transition-all duration-200 disabled:opacity-50 rounded-lg"
+              className="flex items-center gap-2 px-6 py-2 bg-primary hover:bg-primary-hover text-inverse font-semibold border border-border-primary transition-all duration-200 disabled:opacity-50 rounded-lg"
             >
               <Camera className="w-4 h-4" />
               Capture
@@ -684,7 +684,7 @@ export default function PhotoCapture() {
           </div>
           
           <div className="text-center mt-4">
-            <p className="text-xs text-text-muted">
+            <p className="text-xs text-muted">
               📱 Hair down naturally • 💡 Good lighting • 📏 Face in oval • 👆 Tap capture when ready
             </p>
           </div>
