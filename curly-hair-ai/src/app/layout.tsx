@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://curly-hair-ai.vercel.app'),
   title: "Curly Hair AI - Expert Hair Analysis & Personalized Care",
   description: "Get professional curly hair analysis powered by AI. Upload photos for personalized curl pattern assessment, porosity testing, and custom hair care routines.",
   keywords: "curly hair, hair analysis, AI hair expert, curl pattern, hair porosity, hair care routine",
