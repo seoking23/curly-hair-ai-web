@@ -18,8 +18,6 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
   const [error, setError] = useState<string | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [countdown, setCountdown] = useState<number | null>(null);
-  const [faceDetected, setFaceDetected] = useState(false);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
   const [permissionState, setPermissionState] = useState<PermissionState>('prompt');
   const [showFallback, setShowFallback] = useState(false);
@@ -99,46 +97,6 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
       setIsProcessing(false);
     }
   }, [onCapture, facingMode]);
-
-  // Face detection using basic heuristics (position and movement)
-  const detectFaceAndHair = useCallback(() => {
-    if (!videoRef.current || !videoRef.current.videoWidth) return;
-
-    const video = videoRef.current;
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    if (!ctx) return;
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    ctx.drawImage(video, 0, 0);
-
-    // Simple detection based on video dimensions and positioning
-    // In a real app, you'd use a face detection library like MediaPipe or face-api.js
-    const videoAspectRatio = video.videoWidth / video.videoHeight;
-    const isPortrait = videoAspectRatio < 1.2;
-    const hasGoodLighting = true; // Simplified - could analyze brightness
-    const isStable = true; // Simplified - could analyze frame differences
-
-    const detected = isPortrait && hasGoodLighting && isStable;
-    setFaceDetected(detected);
-
-    // Auto-capture after 3 seconds of good detection
-    if (detected && !countdown && !capturedImage) {
-      setCountdown(3);
-      const countdownInterval = setInterval(() => {
-        setCountdown(prev => {
-          if (prev === 1) {
-            clearInterval(countdownInterval);
-            capturePhoto();
-            return null;
-          }
-          return prev ? prev - 1 : null;
-        });
-      }, 1000);
-    }
-  }, [countdown, capturedImage, capturePhoto]);
 
   const initializeCamera = useCallback(async (attempt = 1): Promise<void> => {
     try {
@@ -272,7 +230,6 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
     }
   }, [facingMode, checkCameraPermission]);
 
-
   const switchCamera = useCallback(async () => {
     // Stop current stream directly
     if (streamRef.current) {
@@ -291,11 +248,8 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
     setFacingMode(prev => prev === 'user' ? 'environment' : 'user');
   }, [stream]);
 
-
   const retakePhoto = useCallback(() => {
     setCapturedImage(null);
-    setCountdown(null);
-    setFaceDetected(false);
     // Camera stream should continue working, just reset UI state
   }, []);
 
@@ -358,14 +312,6 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [facingMode]); // Only depend on facingMode to avoid infinite loops
 
-  // Face detection effect
-  useEffect(() => {
-    if (stream && !capturedImage) {
-      const interval = setInterval(detectFaceAndHair, 500);
-      return () => clearInterval(interval);
-    }
-  }, [stream, capturedImage, detectFaceAndHair]);
-
   // File upload handler for fallback
   const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -426,14 +372,12 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
             Curly Hair AI
           </h1>
           <p className="text-text-secondary">
-            Position your face in the frame for hair analysis
+            Position your face in the frame and tap capture when ready
           </p>
-          {/* Debug info - remove in production */}
-          {/* <div className="text-xs text-text-muted mt-2">
-            Loading: {isLoading.toString()} | Error: {error ? 'Yes' : 'No'} | Stream: {stream ? 'Active' : 'None'} | VideoRef: {videoRef.current ? 'Ready' : 'Null'}
-          </div> */}
         </div>
       </div>
+
+
 
       {/* Camera View */}
       <div className="flex-1 flex items-center justify-center p-4">
@@ -527,7 +471,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
                     rx="60"
                     ry="75"
                     fill="none"
-                    stroke={faceDetected ? "#000000" : "#666666"}
+                    stroke="#666666"
                     strokeWidth="2"
                     strokeDasharray="5,5"
                     opacity="0.7"
@@ -537,7 +481,7 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
                   <path
                     d="M 90 80 Q 150 40 210 80 Q 210 100 190 120 Q 170 100 150 105 Q 130 100 110 120 Q 90 100 90 80"
                     fill="none"
-                    stroke={faceDetected ? "#000000" : "#666666"}
+                    stroke="#666666"
                     strokeWidth="2"
                     strokeDasharray="5,5"
                     opacity="0.5"
@@ -554,30 +498,10 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
 
                 {/* Status indicators */}
                 <div className="absolute top-[-2rem] left-4 right-4">
-                  <div className={`text-center p-2 rounded-lg border transition-all ${
-                    faceDetected 
-                      ? 'bg-surface-primary border-border-focus text-primary' 
-                      : 'bg-surface-primary border-border-secondary text-text-muted'
-                  }`}>
-                    {faceDetected ? (
-                      <div className="flex items-center justify-center gap-2">
-                        <Check className="w-4 h-4" />
-                        <span className="text-sm font-medium">Perfect position!</span>
-                      </div>
-                    ) : (
-                      <span className="text-sm font-medium">Position your face in the oval</span>
-                    )}
+                  <div className="text-center p-2 rounded-lg border bg-surface-primary border-border-secondary text-text-muted">
+                    <span className="text-sm font-medium">Position your face in the oval and tap capture</span>
                   </div>
                 </div>
-
-                {/* Countdown */}
-                {countdown && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    <div className="bg-surface-primary rounded-full w-20 h-20 flex items-center justify-center border-4 border-primary shadow-lg">
-                      <span className="text-3xl font-bold text-primary">{countdown}</span>
-                    </div>
-                  </div>
-                )}
 
                 {/* Processing overlay */}
                 {isProcessing && (
@@ -598,29 +522,33 @@ export default function CameraSelfie({ onCapture }: CameraSelfieProps) {
       {/* Controls */}
       {!isLoading && !error && stream && (
         <div className="p-4 border-t border-border-secondary bg-surface-primary">
-          <div className="max-w-md mx-auto flex justify-center gap-4">
-            <button
-              onClick={switchCamera}
-              disabled={isLoading}
-              className="flex items-center gap-2 px-4 py-2 border border-border-primary hover:bg-surface-secondary text-text-primary font-semibold transition-all duration-200 disabled:opacity-50 rounded-lg"
-            >
-              <RotateCw className="w-4 h-4" />
-              Flip
-            </button>
-            
+          <div className="max-w-md mx-auto flex flex-col items-center gap-4">
+            {/* Main Capture Button */}
             <button
               onClick={capturePhoto}
               disabled={isProcessing}
-              className="flex items-center gap-2 px-6 py-2 bg-primary hover:bg-primary-hover text-text-inverse font-semibold border border-border-primary transition-all duration-200 disabled:opacity-50 rounded-lg"
+              className="w-full max-w-xs bg-primary hover:bg-primary-hover text-text-inverse font-bold text-lg px-8 py-4 border border-border-primary transition-all duration-200 disabled:opacity-50 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105"
             >
-              <Camera className="w-4 h-4" />
-              Capture
+              <Camera className="w-6 h-6 inline mr-3" />
+              Capture Photo
             </button>
+            
+            {/* Secondary Controls */}
+            <div className="flex items-center gap-6">
+              <button
+                onClick={switchCamera}
+                disabled={isLoading}
+                className="p-3 border border-border-primary hover:bg-surface-secondary text-text-primary transition-all duration-200 disabled:opacity-50 rounded-full shadow-sm"
+                title="Flip Camera"
+              >
+                <RotateCw className="w-5 h-5" />
+              </button>
+            </div>
           </div>
           
           <div className="text-center mt-4">
             <p className="text-xs text-text-muted">
-              📱 Hair down naturally • 💡 Good lighting • 📏 Face in oval
+              📱 Hair down naturally • 💡 Good lighting • 📏 Face in oval • 👆 Tap capture when ready
             </p>
           </div>
           

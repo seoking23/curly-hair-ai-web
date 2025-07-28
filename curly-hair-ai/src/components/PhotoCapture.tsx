@@ -45,8 +45,6 @@ export default function PhotoCapture() {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [countdown, setCountdown] = useState<number | null>(null);
-  const [faceDetected, setFaceDetected] = useState(false);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
   const [permissionState, setPermissionState] = useState<PermissionState>('prompt');
   const [showFallback, setShowFallback] = useState(false);
@@ -133,46 +131,6 @@ export default function PhotoCapture() {
       setIsProcessing(false);
     }
   }, [photos, currentStep, facingMode]);
-
-  // Face detection using basic heuristics (position and movement)
-  const detectFaceAndHair = useCallback(() => {
-    if (!videoRef.current || !videoRef.current.videoWidth) return;
-
-    const video = videoRef.current;
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    if (!ctx) return;
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    ctx.drawImage(video, 0, 0);
-
-    // Simple detection based on video dimensions and positioning
-    // In a real app, you'd use a face detection library like MediaPipe or face-api.js
-    const videoAspectRatio = video.videoWidth / video.videoHeight;
-    const isPortrait = videoAspectRatio < 1.2;
-    const hasGoodLighting = true; // Simplified - could analyze brightness
-    const isStable = true; // Simplified - could analyze frame differences
-
-    const detected = isPortrait && hasGoodLighting && isStable;
-    setFaceDetected(detected);
-
-    // Auto-capture after 3 seconds of good detection
-    if (detected && !countdown && !photos[currentStep].file) {
-      setCountdown(3);
-      const countdownInterval = setInterval(() => {
-        setCountdown(prev => {
-          if (prev === 1) {
-            clearInterval(countdownInterval);
-            capturePhoto();
-            return null;
-          }
-          return prev ? prev - 1 : null;
-        });
-      }, 1000);
-    }
-  }, [countdown, photos, currentStep, capturePhoto]);
 
   const initializeCamera = useCallback(async (attempt = 1): Promise<void> => {
     try {
@@ -356,8 +314,6 @@ export default function PhotoCapture() {
     if (currentStep < photoSteps.length - 1) {
       setCurrentStep(currentStep + 1);
       // Reset camera state for next step
-      setCountdown(null);
-      setFaceDetected(false);
     } else {
       // All photos captured, proceed to analysis
       handleAnalyze();
@@ -370,8 +326,6 @@ export default function PhotoCapture() {
       ...photoSteps[currentStep]
     };
     setPhotos(updatedPhotos);
-    setCountdown(null);
-    setFaceDetected(false);
   };
 
   const handleAnalyze = async () => {
@@ -451,14 +405,6 @@ export default function PhotoCapture() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [facingMode, currentStep]); // Depend on both facingMode and currentStep
-
-  // Face detection effect
-  useEffect(() => {
-    if (stream && !photos[currentStep].file) {
-      const interval = setInterval(detectFaceAndHair, 500);
-      return () => clearInterval(interval);
-    }
-  }, [stream, photos, currentStep, detectFaceAndHair]);
 
   const currentPhoto = photos[currentStep];
   const allPhotosComplete = photos.every(photo => photo.file);
@@ -663,7 +609,7 @@ export default function PhotoCapture() {
                         rx="60"
                         ry="75"
                         fill="none"
-                        stroke={faceDetected ? "#000000" : "#666666"}
+                        stroke="#666666"
                         strokeWidth="2"
                         strokeDasharray="5,5"
                         opacity="0.7"
@@ -673,7 +619,7 @@ export default function PhotoCapture() {
                       <path
                         d="M 90 80 Q 150 40 210 80 Q 210 100 190 120 Q 170 100 150 105 Q 130 100 110 120 Q 90 100 90 80"
                         fill="none"
-                        stroke={faceDetected ? "#000000" : "#666666"}
+                        stroke="#666666"
                         strokeWidth="2"
                         strokeDasharray="5,5"
                         opacity="0.5"
@@ -690,30 +636,10 @@ export default function PhotoCapture() {
 
                     {/* Status indicators */}
                     <div className="absolute top-[-2rem] left-4 right-4">
-                      <div className={`text-center p-2 rounded-lg border transition-all ${
-                        faceDetected 
-                          ? 'bg-surface-primary border-border-focus text-primary' 
-                          : 'bg-surface-primary border-border-secondary text-text-muted'
-                      }`}>
-                        {faceDetected ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <Check className="w-4 h-4" />
-                            <span className="text-sm font-medium">Perfect position!</span>
-                          </div>
-                        ) : (
-                          <span className="text-sm font-medium">Position your {currentPhoto.title} in the oval</span>
-                        )}
+                      <div className="text-center p-2 rounded-lg border bg-surface-primary border-border-secondary text-text-muted">
+                        <span className="text-sm font-medium">Position your {currentPhoto.title} in the oval and tap capture</span>
                       </div>
                     </div>
-
-                    {/* Countdown */}
-                    {countdown && (
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                        <div className="bg-surface-primary rounded-full w-20 h-20 flex items-center justify-center border-4 border-primary shadow-lg">
-                          <span className="text-3xl font-bold text-primary">{countdown}</span>
-                        </div>
-                      </div>
-                    )}
 
                     {/* Processing overlay */}
                     {isProcessing && (
@@ -759,7 +685,7 @@ export default function PhotoCapture() {
           
           <div className="text-center mt-4">
             <p className="text-xs text-text-muted">
-              📱 Hair down naturally • 💡 Good lighting • 📏 Face in oval
+              📱 Hair down naturally • 💡 Good lighting • 📏 Face in oval • 👆 Tap capture when ready
             </p>
           </div>
         </div>

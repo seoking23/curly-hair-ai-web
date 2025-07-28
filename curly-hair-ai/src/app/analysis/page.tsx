@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import ResultsDisplay from '@/components/ResultsDisplay';
+import PDFResultsDisplay from '@/components/PDFResultsDisplay';
 import { HairAnalysis } from '@/lib/types';
 import LoadingAnimation from '@/components/LoadingAnimation';
 
@@ -12,6 +13,7 @@ export default function AnalysisPage() {
   const [error, setError] = useState<string | null>(null);
   const [analyzedImages, setAnalyzedImages] = useState<string[]>([]);
   const [isSelfieMode, setIsSelfieMode] = useState(false);
+  const [showPDFVersion, setShowPDFVersion] = useState(false);
   const router = useRouter();
 
     const analyzePhotos = useCallback(async () => {
@@ -122,5 +124,21 @@ useEffect(() => {
     );
   }
 
-  return <ResultsDisplay analysis={analysis} analyzedImages={analyzedImages} isSelfieMode={isSelfieMode} />;
+  return (
+    <div>
+      {showPDFVersion ? (
+        <PDFResultsDisplay analysis={analysis} analyzedImages={analyzedImages} isSelfieMode={isSelfieMode} />
+      ) : (
+        <ResultsDisplay analysis={analysis} analyzedImages={analyzedImages} isSelfieMode={isSelfieMode} />
+      )}
+      <div className="fixed bottom-4 right-4 z-50">
+        <button
+          onClick={() => setShowPDFVersion(!showPDFVersion)}
+          className="bg-primary hover:bg-primary-hover text-text-inverse font-semibold px-4 py-2 border border-border-primary transition-all duration-200 rounded-lg shadow-lg"
+        >
+          {showPDFVersion ? '📱 Show Mobile View' : '📄 Show PDF View'}
+        </button>
+      </div>
+    </div>
+  );
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { HairAnalysis } from '@/lib/types';
-import { Droplets, Activity, Waves, AlertTriangle, Sparkles } from 'lucide-react';
+import { Droplets, Activity, Waves, AlertTriangle, Sparkles, Share2, Download } from 'lucide-react';
 import LoadingAnimation from './LoadingAnimation';
 import ResourceCard from './ResourceCard';
 import { getTestResources, getIssueResources, getPainPointResources } from '@/lib/hair-care-resources';
@@ -47,6 +47,29 @@ export default function ResultsDisplay({ analysis, analyzedImages, isSelfieMode 
   const handleGenerateRoutine = () => {
     sessionStorage.setItem('hairAnalysis', JSON.stringify(analysis));
     router.push('/routine');
+  };
+
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'My Curly Hair Analysis Results',
+          text: `Check out my personalized curly hair analysis! I discovered I have ${analysis.curlPattern.assessment} hair with a health score of ${formatHealthScore(analysis.healthScore.score)}/100. Get your own analysis at curly-hair-ai.com`,
+          url: window.location.href,
+        });
+      } else {
+        // Fallback: copy to clipboard
+        const shareText = `Check out my personalized curly hair analysis! I discovered I have ${analysis.curlPattern.assessment} hair with a health score of ${formatHealthScore(analysis.healthScore.score)}/100. Get your own analysis at curly-hair-ai.com`;
+        await navigator.clipboard.writeText(shareText);
+        alert('Share text copied to clipboard!');
+      }
+    } catch (error) {
+      console.error('Share error:', error);
+    }
+  };
+
+  const handleDownloadPDF = () => {
+    window.print();
   };
 
   if (!showResults) {
@@ -303,17 +326,64 @@ export default function ResultsDisplay({ analysis, analyzedImages, isSelfieMode 
 
         {/* CTA */}
         <div className="text-center">
-          <button
-            onClick={handleGenerateRoutine}
-            className="bg-success hover:bg-success-hover text-text-inverse font-bold text-xl px-12 py-4 border border-border-primary transition-all duration-200 rounded-lg shadow-sm hover:shadow-md"
-          >
-            Get Your Personalized Routine 🎯
-          </button>
-          <p className="text-sm text-text-muted mt-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
+            <button
+              onClick={handleGenerateRoutine}
+              className="bg-success hover:bg-success-hover text-text-inverse font-bold text-xl px-12 py-4 border border-border-primary transition-all duration-200 rounded-lg shadow-sm hover:shadow-md"
+            >
+              Get Your Personalized Routine 🎯
+            </button>
+            <button
+              onClick={handleShare}
+              className="bg-primary hover:bg-primary-hover text-text-inverse font-bold text-xl px-12 py-4 border border-border-primary transition-all duration-200 rounded-lg shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+            >
+              <Share2 className="w-5 h-5" />
+              Share Results
+            </button>
+            <button
+              onClick={handleDownloadPDF}
+              className="bg-warning hover:bg-warning-hover text-text-inverse font-bold text-xl px-12 py-4 border border-border-primary transition-all duration-200 rounded-lg shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+            >
+              <Download className="w-5 h-5" />
+              Download PDF
+            </button>
+          </div>
+          <p className="text-sm text-text-muted">
             Based on your analysis, we&apos;ll create a custom hair care routine
           </p>
         </div>
       </div>
+
+      {/* Print Styles for PDF Download */}
+      <style jsx global>{`
+        @media print {
+          body { 
+            margin: 0; 
+            background: white !important;
+          }
+          .min-h-screen { 
+            min-height: auto !important; 
+          }
+          button { 
+            display: none !important; 
+          }
+          .bg-background { 
+            background: white !important; 
+          }
+          .text-text-primary { 
+            color: #000 !important; 
+          }
+          .text-text-secondary { 
+            color: #333 !important; 
+          }
+          .border-border-primary { 
+            border-color: #ccc !important; 
+          }
+          .shadow-sm { 
+            box-shadow: none !important; 
+          }
+        }
+      `}</style>
     </div>
   );
 }

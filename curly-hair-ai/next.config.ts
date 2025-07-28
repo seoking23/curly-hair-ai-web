@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: ['@anthropic-ai/sdk'],
   images: {
-    domains: ['stgkoqsptdgxjwwapqjm.supabase.co'],
+    domains: ['stgkoqsptdgxjwwapqjm.supabase.co', 'i.ytimg.com'],
     formats: ['image/avif', 'image/webp']
   },
   compiler: {
