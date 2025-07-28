@@ -140,7 +140,7 @@ export default function PDFResultsDisplay({ analysis, analyzedImages, isSelfieMo
                 <span className="text-2xl">💫</span>
               </div>
               <div>
-                <h2 className="text-3xl font-bold text-text-primary">Curly Hair AI</h2>
+                <h2 className="text-3xl font-bold text-primary">Curly Hair AI</h2>
                 <p className="text-text-muted">Professional Hair Analysis Report</p>
               </div>
             </div>
